@@ -24,8 +24,6 @@ def make_shell_context():
 def load_user(id):
     return User.query.get(int(id))
 
-from app import routes, models, errors
-
 if not app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
@@ -35,19 +33,25 @@ if not app.debug:
         if app.config['MAIL_USE_TLS']:
             secure = ()
         mail_handler = SMTPHandler(
-            mailhost=(app.config['MAIL_SERVER'],app.config['MALI_PORT']),
-            fromaddr=app.config['ADMINS'], subject='microblog Failure',
+            mailhost=(app.config['MAIL_SERVER'], app.config['MALI_PORT']),
+            fromaddr="no-reply@" + app.config['MAIL_SERVER'],
+            toaddrs=app.config['ADMINS'], subject='Microblog Failure',
             credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)  
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_hander = RotatingFileHandler('Logs/microblog.log', maxBytes=10240,backupCount=10)
-    file_hander.setFormatter(logging.Formatter('%(asctime)s %(lev elname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_hander.setLevel(logging.INFO)
-    app.logger.addHander(file_hander)
+    file_handler = RotatingFileHandler('Logs/microblog.log', maxBytes=10240,
+                                        backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(lev elname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHander(file_handler)
 
     app.logger.setLevel(logging.INFO)
-    app.logger.info('Microblog startup')      
+    app.logger.info('Microblog startup') 
+
+
+from app import routes, models, errors
                
