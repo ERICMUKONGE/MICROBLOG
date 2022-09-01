@@ -7,6 +7,7 @@ import  logging
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 import os
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,6 +16,7 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 from .models import User, Post
+mail = Mail(app)
 
 @app.shell_context_processor
 def make_shell_context():
