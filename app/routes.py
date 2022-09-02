@@ -131,7 +131,7 @@ def unfollow(username):
         if user ==  current_user:
             flash('You cannot unfollow yourself!')
             return redirect(url_for('user', username=username))
-        current_user.follow(user)
+        current_user.unfollow(user)
         db.session.commit()
         flash('You are not following {}.'.format(username))
         return redirect(url_for('user', username=username))
@@ -150,7 +150,7 @@ def explore():
         if posts.has_prev else None        
     return render_template('index.html', title='Explore', posts=posts.items, next_url=next_url, prev_url=prev_url) 
 
-@app.route('/reset_password_reset', methods=['GET','POST']) 
+@app.route('/reset_password_request', methods=['GET','POST']) 
 def reset_password_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
