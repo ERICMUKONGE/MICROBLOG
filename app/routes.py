@@ -1,6 +1,6 @@
 from app import app,db
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm ,ResetPasswordRequestForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm ,ResetPasswordForm,ResetPasswordRequestForm
 from flask_login import current_user, login_user,logout_user,login_required
 from app.models import User, Post
 from werkzeug.urls import url_parse 
@@ -170,7 +170,7 @@ def reset_password(token):
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('index'))
-    form= ResetPasswordRequestForm()
+    form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
